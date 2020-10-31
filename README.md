@@ -15,6 +15,15 @@ Context: Sending out monthly payslips
 pip install -r requirements.txt
 ```
 
+## Infra set up
+- AWS Account
+```bash
+export AWS_PROFILE=personal
+cd terraform
+terraform plan
+terraform apply
+```
+
 ## Running program
 ```bash
 set aws_access_key_id=access-key-id
@@ -24,3 +33,6 @@ python main.py sample.xlsx
 
 python main.py sample.xlsx --send-email
 ```
+
+## Important to note:
+- use AWS SES configuration set to monitor email delivery

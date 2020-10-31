@@ -36,3 +36,6 @@ python main.py sample.xlsx --send-email
 
 ## Important to note:
 - use AWS SES configuration set to monitor email delivery
+- SES pricing: $0.10 for every 1,000 emails sent/mth
+- SNS pricing: 1,000 email notifications/mth (free tier), no charges to lambda (1GB/mth free data transfer out of SNS)
+- Lambda pricing: $0.20 per 1M requests/mth, $0.17 per 10,000 GB-seconds of compute time/mth

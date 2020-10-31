@@ -16,13 +16,16 @@ pip install -r requirements.txt
 ```
 
 ## Infra set up
-- AWS Account
+- AWS Account required
 ```bash
 export AWS_PROFILE=personal
 cd terraform
 terraform plan
 terraform apply
 ```
+1. Creates a SES Config set
+2. Creates a SNS Topic for failed delivery -> triggers email sent (email subscription done manually)
+3. Creates a SNS Topic for successful delivery -> triggers lambda function that logs output to Cloudwatch
 
 ## Running program
 ```bash
@@ -33,6 +36,7 @@ python main.py sample.xlsx
 
 python main.py sample.xlsx --send-email
 ```
+For powershell: `.\run.ps1`
 
 ## Important to note:
 - use AWS SES configuration set to monitor email delivery

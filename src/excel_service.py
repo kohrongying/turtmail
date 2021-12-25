@@ -1,5 +1,6 @@
 import win32com.client
 from pywintypes import com_error
+import pathlib
 
 
 class ExcelService:
@@ -8,7 +9,8 @@ class ExcelService:
 
     def open(self, workbook_filepath):
         try:
-            wb = self.excel.Workbooks.Open(workbook_filepath)
+            wb_abs_path = str(pathlib.Path.cwd() / workbook_filepath)
+            wb = self.excel.Workbooks.Open(wb_abs_path)
             return wb
         except com_error as e:
             print(f'Fail to open {e}')

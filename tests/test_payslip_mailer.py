@@ -1,9 +1,11 @@
 import unittest
+from unittest import TestCase
+
 from src.payslip_recipient import PayslipRecipient
 from src.payslip_mailer import PayslipMailer
 
 
-class PayslipMailerTestCase(unittest.TestCase):
+class TestPayslipMailer(TestCase):
 
     def setUp(self) -> None:
         self.recipient = PayslipRecipient("John Doe", "john@doe.com")
@@ -25,6 +27,17 @@ class PayslipMailerTestCase(unittest.TestCase):
         actual = self.payslip_mailer.format_body()
         self.assertEqual(expected, actual)
 
+    def test_get_recipient_email(self):
+        expected = "john@doe.com"
+        actual = self.payslip_mailer.get_recipient_email()
+        self.assertEqual(expected, actual)
+
+    def test_get_sender_email(self):
+        expected = "SENDEREMAIL@gmail.com"
+        actual = self.payslip_mailer.get_sender_email()
+        self.assertEqual(expected, actual)
+
 
 if __name__ == '__main__':
     unittest.main()
+

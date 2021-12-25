@@ -1,7 +1,7 @@
 import unittest
 from unittest import TestCase
 
-from src.invalid_payslip_sheet_exception import InvalidPayslipSheetException
+from src.exceptions.invalid_payslip_sheet_exception import InvalidPayslipSheetException
 from src.payslip_ws_service import PayslipWsService
 
 

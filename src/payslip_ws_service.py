@@ -1,6 +1,6 @@
 from typing import List
 
-from src.invalid_payslip_sheet_exception import InvalidPayslipSheetException
+from src.exceptions.invalid_payslip_sheet_exception import InvalidPayslipSheetException
 from src.payslip import Payslip
 import re
 

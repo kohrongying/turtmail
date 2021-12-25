@@ -23,12 +23,9 @@ if __name__ == '__main__':
     email_service = EmailService()
 
     for payslip in payslips:
-        name = payslip.recipient.name
-        filename = str(pathlib.Path.cwd() / f'files/{name}.pdf')
+        payslip.export_to_pdf()
+        mailer = PayslipMailer(payslip.recipient, "December", "2020", payslip.filename)
 
-        payslip.ws_range.ExportAsFixedFormat(0, str(pathlib.Path.cwd() / filename))
-
-        mailer = PayslipMailer(payslip.recipient, "December", "2020", filename)
         if to_send_email:
             email_service.send(mailer)
             logging.info('email sent')

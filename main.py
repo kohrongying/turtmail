@@ -1,6 +1,8 @@
 import pathlib
-import argparse
 import logging
+import sys
+
+from src.arg_parser import ArgParser
 from src.email_service import EmailService
 from src.excel_service import ExcelService
 from src.payslip_mailer import PayslipMailer
@@ -11,25 +13,12 @@ from datetime import date
 if __name__ == '__main__':
     logging.basicConfig(filename=f'logs/{str(date.today())}.log', level=logging.INFO)
 
-    # argparse
-    parser = argparse.ArgumentParser(description='Job to send out payslips email')
-    parser.add_argument('file_path', type=str, help='excel file path')
-    parser.add_argument('--send-email',
-                        nargs='?',
-                        type=bool,
-                        const=True,
-                        default=False,
-                        help='Boolean to send email or not'
-                        )
-
-    args = vars(parser.parse_args())
-    arg_file_path = args['file_path']
-    arg_to_send_email = args['send_email']
+    wb_filepath, to_send_email = ArgParser(sys.argv[1:]).get_args()
 
     logging.info('Checking if filepath is valid')
-    is_valid_filepath(arg_file_path)
+    is_valid_filepath(wb_filepath)
 
-    wb = ExcelService.open(arg_file_path)
+    wb = ExcelService.open(wb_filepath)
     payslips = PayslipWbService(wb).get_payslips()
     email_service = EmailService()
 
@@ -40,7 +29,6 @@ if __name__ == '__main__':
         payslip.ws_range.ExportAsFixedFormat(0, str(pathlib.Path.cwd() / filename))
 
         mailer = PayslipMailer(payslip.recipient, "December", "2020", filename)
-        if arg_to_send_email:
+        if to_send_email:
             email_service.send(mailer)
             logging.info('email sent')
-

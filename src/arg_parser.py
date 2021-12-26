@@ -1,7 +1,8 @@
 import argparse
+import datetime
 
 
-class ArgParser():
+class ArgParser:
     arg_file_path = ""
     arg_to_send_email = False
 
@@ -15,7 +16,13 @@ class ArgParser():
                                  default=False,
                                  help='Boolean to send email or not'
                                  )
+        self.parser.add_argument('--payday',
+                                 nargs='?',
+                                 type=str,
+                                 default=datetime.datetime.now().__format__("%Y-%m"),
+                                 help='Payday month and year (YYYY-MM), defaults to today'
+                                 )
         self.args = vars(self.parser.parse_args(args))
 
     def get_args(self):
-        return self.args['file_path'], self.args['send_email']
+        return self.args['file_path'], self.args['send_email'], self.args['payday']

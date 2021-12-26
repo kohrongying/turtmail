@@ -8,6 +8,7 @@ class PayslipDate:
               'November', 'December']
 
     def __init__(self, date_string) -> None:
+        self.mthNum = None
         self.mthString = None
         self.yearString = None
         self.parse_datestring(date_string)
@@ -16,6 +17,7 @@ class PayslipDate:
         parts = date_string.split('-')
         self.yearString = self.__get_year(parts[0])
         self.mthString = self.__get_month(parts[1])
+        self.mthNum = parts[1]
 
     def __get_month(self, mth_index: str):
         try:

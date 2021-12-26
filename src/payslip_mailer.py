@@ -2,15 +2,17 @@ import os
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.mime.application import MIMEApplication
+
+from src.payslip_date import PayslipDate
 from src.payslip_recipient import PayslipRecipient
 
 
 class PayslipMailer:
     sender_email = "SENDEREMAIL@gmail.com"
 
-    def __init__(self, recipient: PayslipRecipient, payslip_month: str, payslip_yr: str, filepath: str) -> None:
+    def __init__(self, recipient: PayslipRecipient, payslip_date: PayslipDate, filepath: str) -> None:
         self.recipient = recipient
-        self.payslip_mth_yr = f'{payslip_month} {payslip_yr}'
+        self.payslip_date = payslip_date
         self.filepath = filepath
 
     def build_message(self):
@@ -29,7 +31,7 @@ class PayslipMailer:
         return msg
 
     def build_subject(self):
-        return f'Payslip for {self.payslip_mth_yr}'
+        return f'Payslip for {self.payslip_date.to_string()}'
 
     def build_body(self):
         CHARSET = "UTF-8"
@@ -41,7 +43,7 @@ class PayslipMailer:
 
     def format_body(self):
         return f"""Hi {self.recipient.name},\r\n\n'
-        f'Please refer to attached for {self.payslip_mth_yr} payslip.\n\n'
+        f'Please refer to attached for {self.payslip_date.to_string()} payslip.\n\n'
         'This is an automated email. Please do not reply.'
         """
 

@@ -1,6 +1,7 @@
 import unittest
 from unittest import TestCase
 
+from src.payslip_date import PayslipDate
 from src.payslip_recipient import PayslipRecipient
 from src.payslip_mailer import PayslipMailer
 
@@ -9,10 +10,8 @@ class TestPayslipMailer(TestCase):
 
     def setUp(self) -> None:
         self.recipient = PayslipRecipient("John Doe", "john@doe.com")
-        self.payslip_mailer = PayslipMailer(recipient=self.recipient,
-                                            payslip_month="December",
-                                            payslip_yr="2020",
-                                            filepath="./test.pdf")
+        self.payday = PayslipDate("2020-12")
+        self.payslip_mailer = PayslipMailer(recipient=self.recipient, payslip_date=self.payday, filepath='sample.pdf')
 
     def test_build_subject(self):
         expected = 'Payslip for December 2020'

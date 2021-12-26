@@ -1,0 +1,2 @@
+class InvalidPayDayException(Exception):
+    pass

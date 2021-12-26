@@ -1,24 +1,37 @@
 from unittest import TestCase
 
+from src.exceptions.invalid_payday_exception import InvalidPayDayException
 from src.payslip_date import PayslipDate
 
 
 class TestPayslipDate(TestCase):
-    def setUp(self) -> None:
-        self.dateString = "2020-12"
-        self.payslip_date = PayslipDate(self.dateString)
 
-    def test_get_month(self):
-        expected = "December"
-        actual = self.payslip_date.get_month(12)
-        self.assertEquals(expected, actual)
-
-    def test_get_year(self):
-        expected = "2020"
-        actual = self.payslip_date.get_year()
-        self.assertEquals(expected, actual)
-
-    def test_to_string(self):
+    def test_basic(self):
+        payslip_date = PayslipDate("2020-12")
         expected = "December 2020"
-        actual = self.payslip_date.to_string()
+        actual = payslip_date.to_string()
         self.assertEquals(expected, actual)
+
+    def test_single_digit_mth(self):
+        payslip_date = PayslipDate("2020-6")
+        expected = "June 2020"
+        actual = payslip_date.to_string()
+        self.assertEquals(expected, actual)
+
+    def test_single_digit_lpad_mth(self):
+        payslip_date = PayslipDate("2020-06")
+        expected = "June 2020"
+        actual = payslip_date.to_string()
+        self.assertEquals(expected, actual)
+
+    def test_invalid_mth(self):
+        with self.assertRaises(InvalidPayDayException):
+            PayslipDate("2020-13")
+
+    def test_invalid_mth_string(self):
+        with self.assertRaises(InvalidPayDayException):
+            PayslipDate("2020-abc")
+
+    def test_invalid_yr_string(self):
+        with self.assertRaises(InvalidPayDayException):
+            PayslipDate("abc-12")

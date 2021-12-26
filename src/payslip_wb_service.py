@@ -13,6 +13,6 @@ class PayslipWbService:
     def get_payslips(self):
         for sheet in self.wb.Sheets:
             ws = self.wb.WorkSheets(sheet.Name)
-            payslips = PayslipWsService(ws, sheet, "XX Pte Ltd").get_payslips()
-        return payslips
+            self.payslips.append(PayslipWsService(ws, sheet, "XX Pte Ltd").get_payslips())
+        return self.payslips
 

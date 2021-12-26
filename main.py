@@ -1,4 +1,3 @@
-import pathlib
 import logging
 import sys
 
@@ -18,7 +17,7 @@ if __name__ == '__main__':
     logging.info('Checking if filepath is valid')
     is_valid_filepath(wb_filepath)
 
-    wb = ExcelService.open(wb_filepath)
+    wb = ExcelService().open(wb_filepath)
     payslips = PayslipWbService(wb).get_payslips()
     email_service = EmailService()
 

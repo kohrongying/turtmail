@@ -14,7 +14,6 @@ class ExcelService:
             return wb
         except com_error as e:
             print(f'Fail to open {e}')
-        finally:
             print('\nClosing excel')
             wb.Close()
             self.excel.Quit()

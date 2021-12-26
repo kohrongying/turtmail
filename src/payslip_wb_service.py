@@ -10,9 +10,9 @@ class PayslipWbService:
     def __init__(self, wb) -> None:
         self.wb = wb
 
-    def get_payslips(self):
+    def get_payslips(self) -> List[Payslip]:
         for sheet in self.wb.Sheets:
             ws = self.wb.WorkSheets(sheet.Name)
-            self.payslips.append(PayslipWsService(ws, sheet, "XX Pte Ltd").get_payslips())
+            self.payslips.extend(PayslipWsService(ws, sheet, "XX Pte Ltd").get_payslips())
         return self.payslips
 

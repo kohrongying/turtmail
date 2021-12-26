@@ -4,9 +4,8 @@ import pathlib
 
 class Payslip:
 
-    def __init__(self, name, email, sheet_name, ws_range) -> None:
+    def __init__(self, name, email, ws_range) -> None:
         self.recipient = PayslipRecipient(name, email)
-        self.sheet_name = sheet_name
         self.ws_range = ws_range
         self.filename = self.build_filename()
 

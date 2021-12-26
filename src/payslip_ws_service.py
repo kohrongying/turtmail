@@ -60,7 +60,7 @@ class PayslipWsService:
         name = payslip.Range('B3').Value
         email_address = payslip.Range('B4').Value
         self.validate_email_address(email_address)
-        return Payslip(name, email_address, self.sheet.Name, ws_range)
+        return Payslip(name, email_address, payslip)
 
     @staticmethod
     def validate_email_address(email_address):

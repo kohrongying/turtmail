@@ -48,3 +48,5 @@ if __name__ == '__main__':
             mailer = PayslipMailer(payslip.recipient, payslip_date, payslip.get_abs_filepath())
             email_service.send(mailer)
             logging.info('email sent')
+
+    ExcelService().close(wb)

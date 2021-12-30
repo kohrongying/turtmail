@@ -20,7 +20,7 @@ class TestPayslipWsService(TestCase):
 
     def test_validate_email_address_return_true_given_valid(self):
         # given
-        valid_email = 'test@gmail.com'
+        valid_email = 'test-sim@hotmail.com'
         self.assertTrue(self.service.validate_email_address(valid_email))
 
     def test_validate_email_address_raise_ex_given_invalid(self):

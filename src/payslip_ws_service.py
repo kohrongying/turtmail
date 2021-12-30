@@ -67,7 +67,7 @@ class PayslipWsService:
 
     @staticmethod
     def validate_email_address(email_address):
-        email_regex = re.compile(r'([A-Za-z0-9]+[.-_])*[A-Za-z0-9]+@[A-Za-z0-9-]+(\.[A-Z|a-z]{2,})+')
+        email_regex = re.compile(r'([A-Za-z0-9-]+[.-_])*[A-Za-z0-9-]+@[A-Za-z0-9-]+(\.[A-Z|a-z]{2,})+')
         if re.fullmatch(email_regex, email_address):
             return True
         raise InvalidPayslipSheetException(f'Invalid email {email_address}')

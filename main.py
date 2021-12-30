@@ -1,4 +1,6 @@
 import sys
+import os
+import logging
 from src.arg_parser import ArgParser
 from src.models.payslip_date import PayslipDate
 from src.services.email_service import EmailService
@@ -7,7 +9,6 @@ from src.payslip_mailer import PayslipMailer
 from src.payslip_wb_service import PayslipWbService
 from validation_service import is_valid_filepath
 from src.services.logging_service import init_logger
-import logging
 
 
 def is_input_valid():
@@ -17,8 +18,13 @@ def is_input_valid():
 
 
 def get_payslips(wb, payday):
+    def get_env_var():
+        terms = [os.getenv('search_terms_1', 'XX Pte Ltd')]
+        if os.getenv("search_terms_2") is not None:
+            terms.append(os.getenv("search_terms_2"))
+        return terms
     payslip_date = PayslipDate(payday)
-    search_terms = ['XX Pte Ltd']
+    search_terms = get_env_var()
     return PayslipWbService(wb,
                             payslip_date=payslip_date,
                             search_terms=search_terms).get_payslips()
@@ -31,7 +37,7 @@ def export_payslips(payslips):
 
 def export_and_send_payslips(payslips):
     email_service = EmailService()
-    sender_email = 'sender@example.com'
+    sender_email = os.getenv('sender_email', 'sender@example.com')
     for payslip in payslips:
         payslip.export_to_pdf()
         mailer = PayslipMailer(payslip, sender_email=sender_email)

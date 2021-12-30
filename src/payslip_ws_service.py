@@ -6,7 +6,6 @@ import re
 
 
 class PayslipWsService:
-    payslips: List[Payslip] = []
 
     # Sheet Row and Column limits
     MAX_COL = 'L'
@@ -19,6 +18,7 @@ class PayslipWsService:
         self.ws = ws
         self.search_terms = search_terms
         self.search_found = None
+        self.payslips: List[Payslip] = []
         # self.MAX_ROW = ws.UsedRange.Rows.Count || 0
 
     def get_payslips(self) -> List[Payslip]:

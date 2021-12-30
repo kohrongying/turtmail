@@ -14,10 +14,11 @@ class PayslipWsService:
     TOP_LEFT_CELL = 'A1'
     BOTTOM_RIGHT_CELL = 'L95'
 
-    def __init__(self, ws, sheet, search_term) -> None:
+    def __init__(self, ws, sheet, search_terms) -> None:
         self.sheet = sheet
         self.ws = ws
-        self.search_term = search_term
+        self.search_terms = search_terms
+        self.search_found = None
         # self.MAX_ROW = ws.UsedRange.Rows.Count || 0
 
     def get_payslips(self) -> List[Payslip]:
@@ -33,14 +34,16 @@ class PayslipWsService:
             print(e)
 
     def check_search_term_exist(self) -> bool:
-        result = self.ws.UsedRange.Find(self.search_term)
-        if result is not None:
-            return True
-        raise InvalidPayslipSheetException(f'Worksheet does not have {self.search_term}')
+        for search_txt in self.search_terms:
+            result = self.ws.UsedRange.Find(search_txt)
+            if result is not None:
+                self.search_found = search_txt
+                return True
+        raise InvalidPayslipSheetException(f'Worksheet does not have {self.search_terms}')
 
     def split_ws_by_search_term(self) -> int:
         first_column = f'A1:A{self.MAX_ROW}'
-        row_index = self.ws.Range(first_column).Find(self.search_term).Row  # 39
+        row_index = self.ws.Range(first_column).Find(self.search_found).Row  # 39
         return row_index
 
     def get_ranges_from_split_row(self, row_index) -> List[str]:

@@ -6,29 +6,12 @@ from src.services.excel_service import ExcelService
 from src.payslip_mailer import PayslipMailer
 from src.payslip_wb_service import PayslipWbService
 from validation_service import is_valid_filepath
-
-
-def get_logging():
-    import logging
-    from datetime import date
-    filename = f'logs/{str(date.today())}.log'
-    format = "%(asctime)s | %(levelname)s | %(message)s"
-    logging.basicConfig(
-        filename=filename,
-        level=logging.INFO,
-        format=format
-    )
-    # set up logging to console
-    console = logging.StreamHandler()
-    console.setLevel(logging.INFO)
-    formatter = logging.Formatter(format)
-    console.setFormatter(formatter)
-    logging.getLogger('').addHandler(console)
-    return logging
+from src.services.logging_service import init_logger
+import logging
 
 
 if __name__ == '__main__':
-    logging = get_logging()
+    init_logger()
 
     wb_filepath, to_send_email, payday = ArgParser(sys.argv[1:]).get_args()
 

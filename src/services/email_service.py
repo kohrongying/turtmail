@@ -13,7 +13,9 @@ class EmailService:
             response = self.client.send_raw_email(
                 Source=mailer.get_sender_email(),
                 Destinations=[mailer.get_recipient_email()],
-                RawMessage=mailer.build_message(),
+                RawMessage={
+                    'Data': mailer.build_message().as_string(),
+                },
                 ConfigurationSetName=self.CONFIGURATION_SET
             )
         except ClientError as e:

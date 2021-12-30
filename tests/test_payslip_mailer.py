@@ -19,10 +19,10 @@ class TestPayslipMailer(TestCase):
         self.assertEqual(expected, actual)
 
     def test_format_body(self):
-        expected = f"""Hi John Doe,\r\n\n'
-        f'Please refer to attached for December 2020 payslip.\n\n'
-        'This is an automated email. Please do not reply.'
-        """
+        expected = f"""Hi John Doe,\r\n\n
+Please refer to attached for December 2020 payslip.\n\n
+This is an automated email. Please do not reply.
+"""
         actual = self.payslip_mailer.format_body()
         self.assertEqual(expected, actual)
 

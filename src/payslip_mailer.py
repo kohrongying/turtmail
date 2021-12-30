@@ -42,10 +42,10 @@ class PayslipMailer:
         return msg_body
 
     def format_body(self):
-        return f"""Hi {self.recipient.name},\r\n\n'
-        f'Please refer to attached for {self.payslip_date.to_string()} payslip.\n\n'
-        'This is an automated email. Please do not reply.'
-        """
+        return f"""Hi {self.recipient.name},\r\n\n
+Please refer to attached for {self.payslip_date.to_string()} payslip.\n\n
+This is an automated email. Please do not reply.
+"""
 
     def build_attachment(self):
         ATTACHMENT = self.filepath

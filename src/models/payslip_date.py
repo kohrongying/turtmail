@@ -1,6 +1,4 @@
 from src.exceptions.invalid_payday_exception import InvalidPayDayException
-from src.payslip_recipient import PayslipRecipient
-import pathlib
 
 
 class PayslipDate:

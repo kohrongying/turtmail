@@ -1,7 +1,7 @@
 from unittest import TestCase
 
 from src.exceptions.invalid_payday_exception import InvalidPayDayException
-from src.payslip_date import PayslipDate
+from src.models.payslip_date import PayslipDate
 
 
 class TestPayslipDate(TestCase):

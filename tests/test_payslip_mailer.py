@@ -1,8 +1,8 @@
 import unittest
 from unittest import TestCase
 
-from src.payslip_date import PayslipDate
-from src.payslip_recipient import PayslipRecipient
+from src.models.payslip_date import PayslipDate
+from src.models.payslip_recipient import PayslipRecipient
 from src.payslip_mailer import PayslipMailer
 
 

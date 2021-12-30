@@ -6,17 +6,17 @@ import re
 
 
 class PayslipWsService:
-
     # Sheet Row and Column limits
     MAX_COL = 'L'
     MAX_ROW = '95'
     TOP_LEFT_CELL = 'A1'
     BOTTOM_RIGHT_CELL = 'L95'
 
-    def __init__(self, ws, sheet, search_terms) -> None:
-        self.sheet = sheet
+    def __init__(self, ws, search_terms, payslip_date) -> None:
         self.ws = ws
         self.search_terms = search_terms
+        self.payslip_date = payslip_date
+
         self.search_found = None
         self.payslips: List[Payslip] = []
         # self.MAX_ROW = ws.UsedRange.Rows.Count || 0
@@ -59,11 +59,11 @@ class PayslipWsService:
         ]
 
     def get_payslip(self, ws_range: str) -> Payslip:
-        payslip = self.ws.Range(ws_range)
-        name = payslip.Range('B3').Value
-        email_address = payslip.Range('B4').Value
+        payslip_range = self.ws.Range(ws_range)
+        name = payslip_range.Range('B3').Value
+        email_address = payslip_range.Range('B4').Value
         self.validate_email_address(email_address)
-        return Payslip(name, email_address, payslip)
+        return Payslip(name, email_address, payslip_range, self.payslip_date)
 
     @staticmethod
     def validate_email_address(email_address):

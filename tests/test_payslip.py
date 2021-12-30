@@ -2,7 +2,7 @@ from unittest import TestCase
 
 import pathlib
 from src.payslip import Payslip
-from src.payslip_recipient import PayslipRecipient
+from src.models.payslip_recipient import PayslipRecipient
 
 
 class TestPayslip(TestCase):

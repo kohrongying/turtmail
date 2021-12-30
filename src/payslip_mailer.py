@@ -2,18 +2,16 @@ import os
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.mime.application import MIMEApplication
-
-from src.payslip_date import PayslipDate
-from src.payslip_recipient import PayslipRecipient
+from src.payslip import Payslip
 
 
 class PayslipMailer:
-    sender_email = "SENDEREMAIL@gmail.com"
-
-    def __init__(self, recipient: PayslipRecipient, payslip_date: PayslipDate, filepath: str) -> None:
-        self.recipient = recipient
-        self.payslip_date = payslip_date
-        self.filepath = filepath
+    def __init__(self, payslip: Payslip, sender_email='sender@example.com') -> None:
+        self.payslip = payslip
+        self.recipient = payslip.recipient
+        self.payslip_date = payslip.payslip_date
+        self.filepath = payslip.get_abs_filepath()
+        self.sender_email = sender_email
 
     def build_message(self):
         # Create a multipart/mixed parent container.

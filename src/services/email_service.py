@@ -1,6 +1,7 @@
 import boto3
 from botocore.exceptions import ClientError
 from src.payslip_mailer import PayslipMailer
+import logging
 
 
 class EmailService:
@@ -19,7 +20,7 @@ class EmailService:
                 ConfigurationSetName=self.CONFIGURATION_SET
             )
         except ClientError as e:
-            print(e.response['Error']['Message'])
+            logging.error(e.response['Error']['Message'])
         else:
-            print(f'Email sent! Message ID: {response["MessageId"]}')
+            logging.info(f'Email sent to {mailer.get_recipient_email()}! Message ID: {response["MessageId"]}')
 

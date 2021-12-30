@@ -1,6 +1,7 @@
 import win32com.client
 from pywintypes import com_error
 import pathlib
+import logging
 
 
 class ExcelService:
@@ -13,11 +14,11 @@ class ExcelService:
             wb = self.excel.Workbooks.Open(wb_abs_path)
             return wb
         except com_error as e:
-            print(f'Fail to open {e}')
-            print('\nClosing excel')
-            wb.Close()
-            self.excel.Quit()
+            logging.error(f'Fail to open {e}')
+            self.close(wb)
 
     def close(self, wb):
+        logging.info('Closing Workbook now')
         wb.Close()
         self.excel.Quit()
+        logging.info('Excel closed')

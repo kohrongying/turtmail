@@ -39,7 +39,6 @@ if __name__ == '__main__':
     wb = ExcelService().open(wb_filepath)
     payslips = PayslipWbService(wb).get_payslips()
     email_service = EmailService()
-
     for payslip in payslips:
         payslip.set_export_directory(f'files/{payslip_date.yearString}/{payslip_date.mthNum}')
         payslip.export_to_pdf()
@@ -47,6 +46,5 @@ if __name__ == '__main__':
         if to_send_email:
             mailer = PayslipMailer(payslip.recipient, payslip_date, payslip.get_abs_filepath())
             email_service.send(mailer)
-            logging.info('email sent')
 
     ExcelService().close(wb)

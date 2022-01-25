@@ -27,7 +27,9 @@ class PayslipWsService:
             row_index = self.split_ws_by_search_term()
             payslip_ranges = self.get_ranges_from_split_row(row_index)
             for ws_range in payslip_ranges:
-                self.payslips.append(self.get_payslip(ws_range))
+                payslip = self.get_payslip(ws_range)
+                if payslip is not None:
+                    self.payslips.append(payslip)
             return self.payslips
 
         except InvalidPayslipSheetException as e:
@@ -62,8 +64,10 @@ class PayslipWsService:
         payslip_range = self.ws.Range(ws_range)
         name = payslip_range.Range('B3').Value
         email_address = payslip_range.Range('B4').Value
-        self.validate_email_address(email_address)
-        return Payslip(name, email_address, payslip_range, self.payslip_date)
+        if name and email_address:
+            self.validate_email_address(email_address)
+            return Payslip(name, email_address, payslip_range, self.payslip_date)
+        return None
 
     @staticmethod
     def validate_email_address(email_address):

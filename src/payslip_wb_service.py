@@ -16,14 +16,11 @@ class PayslipWbService:
     def get_payslips(self) -> List[Payslip]:
         for sheet in self.wb.Sheets:
             ws = self.wb.WorkSheets(sheet.Name)
-            if self.is_valid_sheet(sheet):
-                sheet_payslips = PayslipWsService(ws, search_terms=self.search_terms, payslip_date=self.payslip_date).get_payslips()
-                logging.info(f'Found {len(sheet_payslips)} in {sheet.Name}')
-                self.payslips.extend(sheet_payslips)
+            sheet_payslips = PayslipWsService(ws, search_terms=self.search_terms, payslip_date=self.payslip_date).get_payslips()
+            logging.info(f'Found {len(sheet_payslips)} in {sheet.Name}')
+            self.payslips.extend(sheet_payslips)
 
         logging.info(f'Total payslips: {len(self.payslips)}')
         return self.payslips
 
-    def is_valid_sheet(self, sheet):
-        return '&' in sheet.Name
 

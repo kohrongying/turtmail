@@ -5,7 +5,6 @@ from src.models.payslip_date import PayslipDate
 
 
 class TestPayslipDate(TestCase):
-
     def test_basic(self):
         payslip_date = PayslipDate("2020-12")
         expected = "December 2020"

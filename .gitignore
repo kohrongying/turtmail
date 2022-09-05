@@ -8,3 +8,7 @@ terraform.tf*
 .DS_Store
 *.pdf
 *.xlsx
+build
+dist
+libclang
+.ruff_cache

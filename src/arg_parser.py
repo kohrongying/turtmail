@@ -7,22 +7,24 @@ class ArgParser:
     arg_to_send_email = False
 
     def __init__(self, args) -> None:
-        self.parser = argparse.ArgumentParser(description='Job to send out payslips email')
-        self.parser.add_argument('file_path', type=str, help='excel file path')
-        self.parser.add_argument('--send-email',
-                                 nargs='?',
-                                 type=bool,
-                                 const=True,
-                                 default=False,
-                                 help='Boolean to send email or not'
-                                 )
-        self.parser.add_argument('--payday',
-                                 nargs='?',
-                                 type=str,
-                                 default=datetime.datetime.now().__format__("%Y-%m"),
-                                 help='Payday month and year (YYYY-MM), defaults to today'
-                                 )
+        self.parser = argparse.ArgumentParser(description="Job to send out payslips email")
+        self.parser.add_argument("file_path", type=str, help="excel file path")
+        self.parser.add_argument(
+            "--send-email",
+            nargs="?",
+            type=bool,
+            const=True,
+            default=False,
+            help="Boolean to send email or not",
+        )
+        self.parser.add_argument(
+            "--payday",
+            nargs="?",
+            type=str,
+            default=datetime.datetime.now().__format__("%Y-%m"),
+            help="Payday month and year (YYYY-MM), defaults to today",
+        )
         self.args = vars(self.parser.parse_args(args))
 
     def get_args(self):
-        return self.args['file_path'], self.args['send_email'], self.args['payday']
+        return self.args["file_path"], self.args["send_email"], self.args["payday"]

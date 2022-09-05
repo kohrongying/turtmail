@@ -7,14 +7,15 @@ from src.payslip_mailer import PayslipMailer
 
 
 class TestPayslipMailer(TestCase):
-
     def setUp(self) -> None:
         self.recipient = PayslipRecipient("John Doe", "john@doe.com")
         self.payday = PayslipDate("2020-12")
-        self.payslip_mailer = PayslipMailer(recipient=self.recipient, payslip_date=self.payday, filepath='sample.pdf')
+        self.payslip_mailer = PayslipMailer(
+            recipient=self.recipient, payslip_date=self.payday, filepath="sample.pdf"
+        )
 
     def test_build_subject(self):
-        expected = 'Payslip for December 2020'
+        expected = "Payslip for December 2020"
         actual = self.payslip_mailer.build_subject()
         self.assertEqual(expected, actual)
 
@@ -37,6 +38,5 @@ This is an automated email. Please do not reply.
         self.assertEqual(expected, actual)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()
-

@@ -1,0 +1,5 @@
+[tool.ruff]
+line-length = 95
+
+[tool.black]
+line-length = 95

@@ -1,27 +1,25 @@
-from unittest import TestCase
-
 import pathlib
+import pytest
+
 from src.models.payslip import Payslip
 from src.models.payslip_date import PayslipDate
-from src.models.payslip_recipient import PayslipRecipient
 
 
-class TestPayslip(TestCase):
-    def setUp(self) -> None:
-        self.name = "John Doe"
-        self.email = "joh@doe.com"
-        self.ws_range = ""
-        self.sheet_name = ""
-        self.payday = PayslipDate("2020-12")
-        self.payslip = Payslip(self.name, self.email, self.ws_range, self.payday)
+class TestPayslip:
+    def test_get_recipient(self, mock_payslip):
+        actual = mock_payslip.recipient
+        assert actual.name == "John Doe"
+        assert actual.email == "joh@doe.com"
 
-    def test_get_recipient(self):
-        expected = PayslipRecipient(self.name, self.email)
-        actual = self.payslip.recipient
-        self.assertEquals(expected.name, actual.name)
-        self.assertEquals(expected.email, actual.email)
+    def test_build_filename(self, mock_payslip):
+        expected = str(pathlib.Path.cwd() / f"files/2020/12/John Doe.pdf")
+        actual = mock_payslip.get_abs_filepath()
+        assert actual == expected
 
-    def test_build_filename(self):
-        expected = str(pathlib.Path.cwd() / f"files/2020/12/{self.name}.pdf")
-        actual = self.payslip.get_abs_filepath()
-        self.assertEquals(expected, actual)
+    @pytest.fixture
+    def mock_payslip(self):
+        name = "John Doe"
+        email = "joh@doe.com"
+        ws_range = ""
+        payday = PayslipDate("2020-12")
+        return Payslip(name, email, ws_range, payday)

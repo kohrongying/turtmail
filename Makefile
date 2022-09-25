@@ -9,4 +9,4 @@ fmt:
 
 .PHONY: test
 test:
-	python -m unittes
+	python -m pytest .

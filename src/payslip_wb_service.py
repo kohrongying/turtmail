@@ -1,6 +1,6 @@
 from typing import List
 
-from src.payslip import Payslip
+from src.models.payslip import Payslip
 from src.models.payslip_date import PayslipDate
 from src.payslip_ws_service import PayslipWsService
 import logging

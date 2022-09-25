@@ -5,14 +5,14 @@ from src.arg_parser import ArgParser
 from src.models.payslip_date import PayslipDate
 from src.services.email_service import EmailService
 from src.services.excel_service import ExcelService
-from src.payslip_mailer import PayslipMailer
+from src.models.payslip_mailer import PayslipMailer
 from src.payslip_wb_service import PayslipWbService
-from validation_service import is_valid_filepath
+from src.validation_service import validate_filepath
 from src.services.logging_service import init_logger
 
 
 def is_input_valid():
-    is_valid_filepath(wb_filepath)
+    validate_filepath(wb_filepath)
     PayslipDate(payday)
     logging.info('Input arguments are valid')
 

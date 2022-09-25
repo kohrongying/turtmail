@@ -1,7 +1,7 @@
 from typing import List
 
 from src.exceptions.invalid_payslip_sheet_exception import InvalidPayslipSheetException
-from src.payslip import Payslip
+from src.models.payslip import Payslip
 import re
 
 

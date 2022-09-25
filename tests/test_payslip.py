@@ -1,7 +1,8 @@
 from unittest import TestCase
 
 import pathlib
-from src.payslip import Payslip
+from src.models.payslip import Payslip
+from src.models.payslip_date import PayslipDate
 from src.models.payslip_recipient import PayslipRecipient
 
 
@@ -11,7 +12,8 @@ class TestPayslip(TestCase):
         self.email = "joh@doe.com"
         self.ws_range = ""
         self.sheet_name = ""
-        self.payslip = Payslip(self.name, self.email, self.sheet_name, self.ws_range)
+        self.payday = PayslipDate("2020-12")
+        self.payslip = Payslip(self.name, self.email, self.ws_range, self.payday)
 
     def test_get_recipient(self):
         expected = PayslipRecipient(self.name, self.email)
@@ -20,6 +22,6 @@ class TestPayslip(TestCase):
         self.assertEquals(expected.email, actual.email)
 
     def test_build_filename(self):
-        expected = str(pathlib.Path.cwd() / f"files/{self.name}.pdf")
-        actual = self.payslip.filename
+        expected = str(pathlib.Path.cwd() / f"files/2020/12/{self.name}.pdf")
+        actual = self.payslip.get_abs_filepath()
         self.assertEquals(expected, actual)

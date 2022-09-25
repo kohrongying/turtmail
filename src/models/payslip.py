@@ -5,7 +5,7 @@ import logging
 
 
 class Payslip:
-    def __init__(self, name, email, ws_range, payslip_date: PayslipDate) -> None:
+    def __init__(self, name: str, email: str, ws_range, payslip_date: PayslipDate) -> None:
         self.recipient = PayslipRecipient(name, email)
         self.ws_range = ws_range
         self.payslip_date = payslip_date

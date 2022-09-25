@@ -6,3 +6,7 @@ lint:
 .PHONY: fmt
 fmt:
 	black src tests
+
+.PHONY: test
+test:
+	python -m unittes

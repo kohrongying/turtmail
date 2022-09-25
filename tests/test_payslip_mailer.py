@@ -1,17 +1,21 @@
 import unittest
 from unittest import TestCase
 
+from src.models.payslip import Payslip
 from src.models.payslip_date import PayslipDate
 from src.models.payslip_recipient import PayslipRecipient
-from src.payslip_mailer import PayslipMailer
+from src.models.payslip_mailer import PayslipMailer
 
 
 class TestPayslipMailer(TestCase):
     def setUp(self) -> None:
-        self.recipient = PayslipRecipient("John Doe", "john@doe.com")
+        name = "John Doe"
+        email = "john@doe.com"
+        self.recipient = PayslipRecipient(name, email)
         self.payday = PayslipDate("2020-12")
+        self.payslip = Payslip(name=name, email=email, ws_range=None, payslip_date=self.payday)
         self.payslip_mailer = PayslipMailer(
-            recipient=self.recipient, payslip_date=self.payday, filepath="sample.pdf"
+            payslip=self.payslip
         )
 
     def test_build_subject(self):
@@ -33,7 +37,7 @@ This is an automated email. Please do not reply.
         self.assertEqual(expected, actual)
 
     def test_get_sender_email(self):
-        expected = "SENDEREMAIL@gmail.com"
+        expected = "sender@example.com"
         actual = self.payslip_mailer.get_sender_email()
         self.assertEqual(expected, actual)
 

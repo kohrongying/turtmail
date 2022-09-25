@@ -1,6 +1,6 @@
 import boto3
 from botocore.exceptions import ClientError
-from src.payslip_mailer import PayslipMailer
+from src.models.payslip_mailer import PayslipMailer
 import logging
 
 

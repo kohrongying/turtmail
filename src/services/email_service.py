@@ -23,6 +23,6 @@ class EmailService:
             logging.error(e.response["Error"]["Message"])
         else:
             logging.info(
-                f'Email sent to {mailer.get_recipient_email()}! '
+                f"Email sent to {mailer.get_recipient_email()}! "
                 f'Message ID: {response["MessageId"]}'
             )

@@ -1,8 +1,10 @@
-from typing import List
+from typing import List, Optional
 
 from src.exceptions.invalid_payslip_sheet_exception import InvalidPayslipSheetException
 from src.models.payslip import Payslip
 import re
+
+from src.models.payslip_recipient import PayslipRecipient
 
 
 class PayslipWsService:
@@ -57,13 +59,16 @@ class PayslipWsService:
 
         return [f"{r1_top_left}:{r1_bottom_right}", f"{r2_top_left}:{r2_bottom_right}"]
 
-    def get_payslip(self, ws_range: str) -> Payslip:
+    def get_payslip(self, ws_range: str) -> Optional[Payslip]:
         payslip_range = self.ws.Range(ws_range)
         name = payslip_range.Range("B3").Value
         email_address = payslip_range.Range("B4").Value
         if name and email_address:
             self.validate_email_address(email_address)
-            return Payslip(name, email_address, payslip_range, self.payslip_date)
+            recipient = PayslipRecipient(name=name, email=email_address)
+            return Payslip(
+                recipient=recipient, ws_range=payslip_range, payslip_date=self.payslip_date
+            )
         return None
 
     @staticmethod

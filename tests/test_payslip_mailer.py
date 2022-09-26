@@ -3,6 +3,7 @@ import pytest
 from src.models.payslip import Payslip
 from src.models.payslip_date import PayslipDate
 from src.models.payslip_mailer import PayslipMailer
+from src.models.payslip_recipient import PayslipRecipient
 
 
 class TestPayslipMailer:
@@ -37,5 +38,6 @@ This is an automated email. Please do not reply.
     def mock_payslip(self) -> Payslip:
         name = "John Doe"
         email = "john@doe.com"
+        recipient = PayslipRecipient(name, email)
         payday = PayslipDate("2020-12")
-        return Payslip(name=name, email=email, ws_range=None, payslip_date=payday)
+        return Payslip(recipient=recipient, ws_range=None, payslip_date=payday)

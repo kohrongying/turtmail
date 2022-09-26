@@ -8,10 +8,11 @@ from src.models.payslip import Payslip
 class PayslipMailer:
     def __init__(self, payslip: Payslip, sender_email="sender@example.com") -> None:
         self.payslip = payslip
+        self.sender_email = sender_email
+
         self.recipient = payslip.recipient
         self.payslip_date = payslip.payslip_date
         self.filepath = payslip.get_abs_filepath()
-        self.sender_email = sender_email
 
     def build_message(self):
         # Create a multipart/mixed parent container.

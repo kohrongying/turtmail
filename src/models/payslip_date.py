@@ -17,19 +17,20 @@ class PayslipDate:
         "December",
     ]
 
-    def __init__(self, date_string) -> None:
-        self.mthNum = None
-        self.mthString = None
-        self.yearString = None
+    def __init__(self, date_string: str) -> None:
+        self.mthNum: str = ""
+        self.mthString: str = ""
+        self.yearString: str = ""
+
         self.parse_datestring(date_string)
 
-    def parse_datestring(self, date_string):
+    def parse_datestring(self, date_string: str) -> None:
         parts = date_string.split("-")
         self.yearString = self.__get_year(parts[0])
         self.mthString = self.__get_month(parts[1])
-        self.mthNum = parts[1]
+        self.mthNum = "{:02d}".format(int(parts[1]))
 
-    def __get_month(self, mth_index: str):
+    def __get_month(self, mth_index: str) -> str:
         try:
             month_index = int(mth_index)
             if month_index > 12:
@@ -38,7 +39,7 @@ class PayslipDate:
         except ValueError as e:
             raise InvalidPayDayException(f"Invalid Month {mth_index} provided")
 
-    def __get_year(self, year_string):
+    def __get_year(self, year_string: str) -> str:
         try:
             int(year_string)
             return year_string

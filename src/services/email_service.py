@@ -5,7 +5,7 @@ import logging
 
 
 class EmailService:
-    CONFIGURATION_SET = "payslip-config"
+    CONFIGURATION_SET = "ses-cfgset-prd-payslip-service"
     AWS_REGION = "ap-southeast-1"
     client = boto3.client('ses', region_name=AWS_REGION)
 

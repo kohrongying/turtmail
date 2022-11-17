@@ -1,23 +1,15 @@
-import sys
 import os
 import logging
-from src.arg_parser import ArgParser
 from src.models.payslip_date import PayslipDate
 from src.services.email_service import EmailService
 from src.services.excel_service import ExcelService
 from src.models.payslip_mailer import PayslipMailer
 from src.payslip_wb_service import PayslipWbService
-from src.validation_service import validate_filepath
 from src.services.logging_service import init_logger
+from gooey import Gooey, GooeyParser
 
 
-def is_input_valid():
-    validate_filepath(wb_filepath)
-    PayslipDate(payday)
-    logging.info('Input arguments are valid')
-
-
-def get_payslips(wb, payday):
+def get_payslips(wb, payday: str):
     def get_env_var():
         terms = [os.getenv('search_terms_1', 'XX Pte Ltd')]
         if os.getenv("search_terms_2") is not None:
@@ -44,17 +36,38 @@ def export_and_send_payslips(payslips):
         email_service.send(mailer)
 
 
+@Gooey()
+def get_args():
+    parser = GooeyParser(description='Job to send out payslips email')
+    parser.add_argument('file_path',
+                        help='Select Excel File',
+                        widget='FileChooser',
+                        gooey_options=dict(wildcard="Excel (.xlsx)|*.xlsx")
+                        )
+    parser.add_argument('-s', '--send_email',
+                        action="store_true",
+                        help='Do you wish to send email now?'
+                        )
+    parser.add_argument('payday',
+                        widget="DateChooser",
+                        help='Payslip for which month?'
+                        )
+    return parser.parse_args()
+
+
 if __name__ == '__main__':
+
     # Set up
     init_logger()
-    wb_filepath, to_send_email, payday = ArgParser(sys.argv[1:]).get_args()
-    is_input_valid()
+    args = get_args()
+    logging.info(f"Reading {args.file_path}")
 
-    wb = ExcelService().open(wb_filepath)
-    payslips = get_payslips(wb, payday)
+    wb = ExcelService().open(args.file_path)
+    payslips = get_payslips(wb, args.payday)
 
-    if to_send_email:
-        export_and_send_payslips(payslips)
+    if args.send_email:
+        # export_and_send_payslips(payslips)
+        print('sending email')
     else:
         export_payslips(payslips)
 

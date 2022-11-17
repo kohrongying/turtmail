@@ -1,5 +1,6 @@
 import os
 import logging
+from collections import namedtuple
 from datetime import datetime
 
 from src.models.payslip_date import PayslipDate
@@ -23,8 +24,8 @@ def export_payslips(payslips):
         payslip.export_to_pdf()
 
 
-def export_and_send_payslips(payslips, sender_email):
-    email_service = EmailService()
+def export_and_send_payslips(payslips, sender_email, email_credential):
+    email_service = EmailService(email_credential)
     for payslip in payslips:
         payslip.export_to_pdf()
         mailer = PayslipMailer(payslip, sender_email=sender_email)
@@ -72,6 +73,16 @@ def get_args():
                               default=os.getenv('search_terms', 'XX Pte Ltd'),
                               help="List of search terms separated by ';' in which one must be present in every payslip")
 
+    admin_parser.add_argument('-a', '--aws-access-key-id',
+                              widget="Textarea",
+                              default=os.getenv('aws_access_key_id'),
+                              help="AWS IAM User Access Key ID used for SES")
+
+    admin_parser.add_argument('-k', '--aws-secret-access-key',
+                              widget="Textarea",
+                              default=os.getenv('aws_secret_access_key'),
+                              help="AWS IAM User Secret Access Key used for SES")
+
     return parser.parse_args()
 
 
@@ -87,7 +98,9 @@ if __name__ == '__main__':
     payslips = get_payslips(wb, payday=args.Payday, search_terms=args.search_terms)
 
     if args.send_email:
-        export_and_send_payslips(payslips, sender_email=args.sender_email)
+        EmailCredential = namedtuple("EmailCredential", "aws_access_key_id aws_secret_access_key")
+        email_cred = EmailCredential(args.aws_access_key_id, args.aws_secret_access_key)
+        export_and_send_payslips(payslips, sender_email=args.sender_email, email_credential=email_cred)
     else:
         export_payslips(payslips)
 

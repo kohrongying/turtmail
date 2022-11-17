@@ -2,24 +2,25 @@ import os
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.mime.application import MIMEApplication
-from src.payslip import Payslip
+from src.models.payslip import Payslip
 
 
 class PayslipMailer:
-    def __init__(self, payslip: Payslip, sender_email='sender@example.com') -> None:
+    def __init__(self, payslip: Payslip, sender_email="sender@example.com") -> None:
         self.payslip = payslip
+        self.sender_email = sender_email
+
         self.recipient = payslip.recipient
         self.payslip_date = payslip.payslip_date
         self.filepath = payslip.get_abs_filepath()
-        self.sender_email = sender_email
 
     def build_message(self):
         # Create a multipart/mixed parent container.
-        msg = MIMEMultipart('mixed')
+        msg = MIMEMultipart("mixed")
 
-        msg['Subject'] = self.build_subject()
-        msg['From'] = self.sender_email
-        msg['To'] = self.recipient.email
+        msg["Subject"] = self.build_subject()
+        msg["From"] = self.sender_email
+        msg["To"] = self.recipient.email
 
         msg_body = self.build_body()
         msg.attach(msg_body)
@@ -29,13 +30,13 @@ class PayslipMailer:
         return msg
 
     def build_subject(self):
-        return f'Payslip for {self.payslip_date.to_string()}'
+        return f"Payslip for {self.payslip_date.to_string()}"
 
     def build_body(self):
         CHARSET = "UTF-8"
-        BODY_TEXT = (self.format_body())
-        msg_body = MIMEMultipart('alternative')
-        textpart = MIMEText(BODY_TEXT.encode(CHARSET), 'plain', CHARSET)
+        BODY_TEXT = self.format_body()
+        msg_body = MIMEMultipart("alternative")
+        textpart = MIMEText(BODY_TEXT.encode(CHARSET), "plain", CHARSET)
         msg_body.attach(textpart)
         return msg_body
 
@@ -47,8 +48,10 @@ This is an automated email. Please do not reply.
 
     def build_attachment(self):
         ATTACHMENT = self.filepath
-        att = MIMEApplication(open(ATTACHMENT, 'rb').read())
-        att.add_header('Content-Disposition', 'attachment', filename=os.path.basename(ATTACHMENT))
+        att = MIMEApplication(open(ATTACHMENT, "rb").read())
+        att.add_header(
+            "Content-Disposition", "attachment", filename=os.path.basename(ATTACHMENT)
+        )
         return att
 
     def get_recipient_email(self):

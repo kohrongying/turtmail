@@ -1,42 +1,43 @@
-import unittest
-from unittest import TestCase
+import pytest
 
+from src.models.payslip import Payslip
 from src.models.payslip_date import PayslipDate
+from src.models.payslip_mailer import PayslipMailer
 from src.models.payslip_recipient import PayslipRecipient
-from src.payslip_mailer import PayslipMailer
 
 
-class TestPayslipMailer(TestCase):
+class TestPayslipMailer:
+    def test_build_subject(self, mock_payslip_mailer):
+        expected = "Payslip for December 2020"
+        actual = mock_payslip_mailer.build_subject()
+        assert actual == expected
 
-    def setUp(self) -> None:
-        self.recipient = PayslipRecipient("John Doe", "john@doe.com")
-        self.payday = PayslipDate("2020-12")
-        self.payslip_mailer = PayslipMailer(recipient=self.recipient, payslip_date=self.payday, filepath='sample.pdf')
-
-    def test_build_subject(self):
-        expected = 'Payslip for December 2020'
-        actual = self.payslip_mailer.build_subject()
-        self.assertEqual(expected, actual)
-
-    def test_format_body(self):
+    def test_format_body(self, mock_payslip_mailer):
         expected = f"""Hi John Doe,\r\n\n
 Please refer to attached for December 2020 payslip.\n\n
 This is an automated email. Please do not reply.
 """
-        actual = self.payslip_mailer.format_body()
-        self.assertEqual(expected, actual)
+        actual = mock_payslip_mailer.format_body()
+        assert actual == expected
 
-    def test_get_recipient_email(self):
+    def test_get_recipient_email(self, mock_payslip_mailer):
         expected = "john@doe.com"
-        actual = self.payslip_mailer.get_recipient_email()
-        self.assertEqual(expected, actual)
+        actual = mock_payslip_mailer.get_recipient_email()
+        assert actual == expected
 
-    def test_get_sender_email(self):
-        expected = "SENDEREMAIL@gmail.com"
-        actual = self.payslip_mailer.get_sender_email()
-        self.assertEqual(expected, actual)
+    def test_get_sender_email(self, mock_payslip_mailer):
+        expected = "sender@example.com"
+        actual = mock_payslip_mailer.get_sender_email()
+        assert actual == expected
 
+    @pytest.fixture
+    def mock_payslip_mailer(self, mock_payslip) -> PayslipMailer:
+        return PayslipMailer(payslip=mock_payslip)
 
-if __name__ == '__main__':
-    unittest.main()
-
+    @pytest.fixture
+    def mock_payslip(self) -> Payslip:
+        name = "John Doe"
+        email = "john@doe.com"
+        recipient = PayslipRecipient(name, email)
+        payday = PayslipDate("2020-12")
+        return Payslip(recipient=recipient, ws_range=None, payslip_date=payday)

@@ -1,27 +1,30 @@
-from unittest import TestCase
-
 import pathlib
-from src.payslip import Payslip
+import pytest
+
+from src.models.payslip import Payslip
+from src.models.payslip_date import PayslipDate
 from src.models.payslip_recipient import PayslipRecipient
 
 
-class TestPayslip(TestCase):
+class TestPayslip:
+    def test_get_abs_filepath_and_get_export_dir(self, mock_payslip, mocker):
+        with mocker.patch("src.models.payslip.pathlib.Path"):
+            expected = str(pathlib.Path.cwd() / f"files/2020/12/John Doe.pdf")
+            actual = mock_payslip.get_abs_filepath()
+            assert actual == expected
 
-    def setUp(self) -> None:
-        self.name = 'John Doe'
-        self.email = "joh@doe.com"
-        self.ws_range = ''
-        self.sheet_name = ''
-        self.payslip = Payslip(self.name, self.email, self.sheet_name, self.ws_range)
+    def test_export_to_pdf(self, mock_payslip, mocker):
+        pass
 
-    def test_get_recipient(self):
-        expected = PayslipRecipient(self.name, self.email)
-        actual = self.payslip.recipient
-        self.assertEquals(expected.name, actual.name)
-        self.assertEquals(expected.email, actual.email)
+    @pytest.fixture
+    def mock_payslip(self):
+        name = "John Doe"
+        email = "joh@doe.com"
+        recipient = PayslipRecipient(name, email)
+        ws_range = ""
+        payday = PayslipDate("2020-12")
+        return Payslip(recipient, ws_range, payday)
 
-    def test_build_filename(self):
-        expected = str(pathlib.Path.cwd() / f'files/{self.name}.pdf')
-        actual = self.payslip.filename
-        self.assertEquals(expected, actual)
-
+    @pytest.fixture
+    def mock_ws_range(self, mocker):
+        return mocker.patch("")

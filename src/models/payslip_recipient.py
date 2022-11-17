@@ -1,7 +1,7 @@
-class PayslipRecipient:
-    name = 'Bob'
-    email = ''
+from dataclasses import dataclass
 
-    def __init__(self, name, email) -> None:
-        self.name = name
-        self.email = email
+
+@dataclass
+class PayslipRecipient:
+    name: str
+    email: str

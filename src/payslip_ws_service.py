@@ -1,16 +1,18 @@
-from typing import List
+from typing import List, Optional
 
 from src.exceptions.invalid_payslip_sheet_exception import InvalidPayslipSheetException
-from src.payslip import Payslip
+from src.models.payslip import Payslip
 import re
+
+from src.models.payslip_recipient import PayslipRecipient
 
 
 class PayslipWsService:
     # Sheet Row and Column limits
-    MAX_COL = 'L'
-    MAX_ROW = '95'
-    TOP_LEFT_CELL = 'A1'
-    BOTTOM_RIGHT_CELL = 'L95'
+    MAX_COL = "L"
+    MAX_ROW = "95"
+    TOP_LEFT_CELL = "A1"
+    BOTTOM_RIGHT_CELL = "L95"
 
     def __init__(self, ws, search_terms, payslip_date) -> None:
         self.ws = ws
@@ -41,37 +43,39 @@ class PayslipWsService:
             if result is not None:
                 self.search_found = search_txt
                 return True
-        raise InvalidPayslipSheetException(f'Worksheet does not have {self.search_terms}')
+        raise InvalidPayslipSheetException(f"Worksheet does not have {self.search_terms}")
 
     def split_ws_by_search_term(self) -> int:
-        first_column = f'A1:A{self.MAX_ROW}'
+        first_column = f"A1:A{self.MAX_ROW}"
         row_index = self.ws.Range(first_column).Find(self.search_found).Row  # 39
         return row_index
 
     def get_ranges_from_split_row(self, row_index) -> List[str]:
         r1_top_left = self.TOP_LEFT_CELL
-        r1_bottom_right = f'{self.MAX_COL}{row_index - 2}'
+        r1_bottom_right = f"{self.MAX_COL}{row_index - 2}"
 
-        r2_top_left = f'A{row_index}'
+        r2_top_left = f"A{row_index}"
         r2_bottom_right = self.BOTTOM_RIGHT_CELL
 
-        return [
-            f'{r1_top_left}:{r1_bottom_right}',
-            f'{r2_top_left}:{r2_bottom_right}'
-        ]
+        return [f"{r1_top_left}:{r1_bottom_right}", f"{r2_top_left}:{r2_bottom_right}"]
 
-    def get_payslip(self, ws_range: str) -> Payslip:
+    def get_payslip(self, ws_range: str) -> Optional[Payslip]:
         payslip_range = self.ws.Range(ws_range)
-        name = payslip_range.Range('B3').Value
-        email_address = payslip_range.Range('B4').Value
+        name = payslip_range.Range("B3").Value
+        email_address = payslip_range.Range("B4").Value
         if name and email_address:
             self.validate_email_address(email_address)
-            return Payslip(name, email_address, payslip_range, self.payslip_date)
+            recipient = PayslipRecipient(name=name, email=email_address)
+            return Payslip(
+                recipient=recipient, ws_range=payslip_range, payslip_date=self.payslip_date
+            )
         return None
 
     @staticmethod
     def validate_email_address(email_address):
-        email_regex = re.compile(r'([A-Za-z0-9-]+[.-_])*[A-Za-z0-9-]+@[A-Za-z0-9-]+(\.[A-Z|a-z]{2,})+')
+        email_regex = re.compile(
+            r"([A-Za-z0-9-]+[.-_])*[A-Za-z0-9-]+@[A-Za-z0-9-]+(\.[A-Z|a-z]{2,})+"
+        )
         if re.fullmatch(email_regex, email_address):
             return True
-        raise InvalidPayslipSheetException(f'Invalid email {email_address}')
+        raise InvalidPayslipSheetException(f"Invalid email {email_address}")

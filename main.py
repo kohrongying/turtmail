@@ -1,5 +1,7 @@
 import os
 import logging
+from datetime import datetime
+
 from src.models.payslip_date import PayslipDate
 from src.services.email_service import EmailService
 from src.services.excel_service import ExcelService
@@ -36,21 +38,23 @@ def export_and_send_payslips(payslips):
         email_service.send(mailer)
 
 
-@Gooey()
+@Gooey(program_name="Send Monthly Payslips")
 def get_args():
-    parser = GooeyParser(description='Job to send out payslips email')
-    parser.add_argument('file_path',
-                        help='Select Excel File',
+    parser = GooeyParser()
+    parser.add_argument('Filepath',
+                        help='Select the excel file containing the payslips',
                         widget='FileChooser',
                         gooey_options=dict(wildcard="Excel (.xlsx)|*.xlsx")
                         )
     parser.add_argument('-s', '--send_email',
                         action="store_true",
+                        default=False,
                         help='Do you wish to send email now?'
                         )
-    parser.add_argument('payday',
+    parser.add_argument("-p", '--Payday',
                         widget="DateChooser",
-                        help='Payslip for which month?'
+                        default=datetime.today().strftime("%Y-%m-%d"),
+                        help='Which month are you sending payslips for?'
                         )
     return parser.parse_args()
 
@@ -60,10 +64,11 @@ if __name__ == '__main__':
     # Set up
     init_logger()
     args = get_args()
-    logging.info(f"Reading {args.file_path}")
 
-    wb = ExcelService().open(args.file_path)
-    payslips = get_payslips(wb, args.payday)
+    logging.info(f"Your input: {args}")
+
+    wb = ExcelService().open(args.Filepath)
+    payslips = get_payslips(wb, args.Payday)
 
     if args.send_email:
         # export_and_send_payslips(payslips)

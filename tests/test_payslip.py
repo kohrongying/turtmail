@@ -22,7 +22,7 @@ class TestPayslip:
         email = "joh@doe.com"
         recipient = PayslipRecipient(name, email)
         ws_range = ""
-        payday = PayslipDate("2020-12")
+        payday = PayslipDate("2020-12-01")
         return Payslip(recipient, ws_range, payday)
 
     @pytest.fixture

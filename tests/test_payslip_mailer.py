@@ -39,5 +39,5 @@ This is an automated email. Please do not reply.
         name = "John Doe"
         email = "john@doe.com"
         recipient = PayslipRecipient(name, email)
-        payday = PayslipDate("2020-12")
+        payday = PayslipDate("2020-12-01")
         return Payslip(recipient=recipient, ws_range=None, payslip_date=payday)

@@ -72,7 +72,7 @@ class PayslipWsService:
         return None
 
     @staticmethod
-    def validate_email_address(email_address):
+    def validate_email_address(email_address) -> Optional[bool]:
         email_regex = re.compile(
             r"([A-Za-z0-9-]+[.-_])*[A-Za-z0-9-]+@[A-Za-z0-9-]+(\.[A-Z|a-z]{2,})+"
         )

@@ -8,5 +8,5 @@ class PayslipDate:
         self.mthString: str = self.datetime_object.strftime("%B")
         self.yearString: str = self.datetime_object.strftime("%Y")
 
-    def to_string(self):
+    def to_string(self) -> str:
         return f"{self.mthString} {self.yearString}"

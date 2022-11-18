@@ -1,8 +1,10 @@
 import os
 import logging
-from collections import namedtuple
+from dataclasses import dataclass
 from datetime import datetime
+from typing import List
 
+from src.models.payslip import Payslip
 from src.models.payslip_date import PayslipDate
 from src.services.email_service import EmailService
 from src.services.excel_service import ExcelService
@@ -11,21 +13,26 @@ from src.payslip_wb_service import PayslipWbService
 from src.services.logging_service import init_logger
 from gooey import Gooey, GooeyParser
 
+@dataclass
+class EmailCredential:
+    aws_access_key_id: str
+    aws_secret_access_key: str
 
-def get_payslips(wb, payday: str, search_terms: str):
+
+def get_payslips(wb, payday: str, search_terms: str) -> List[Payslip]:
     payslip_date = PayslipDate(payday)
     return PayslipWbService(wb,
                             payslip_date=payslip_date,
                             search_terms=search_terms.split(";")).get_payslips()
 
 
-def export_payslips(payslips):
+def export_payslips(payslips: List[Payslip]):
     for payslip in payslips:
         payslip.export_to_pdf()
 
 
-def export_and_send_payslips(payslips, sender_email, email_credential):
-    email_service = EmailService(email_credential)
+def export_and_send_payslips(payslips: List[Payslip], sender_email: str, email_credential: EmailCredential):
+    email_service = EmailService(email_credential=email_credential)
     for payslip in payslips:
         payslip.export_to_pdf()
         mailer = PayslipMailer(payslip, sender_email=sender_email)
@@ -98,7 +105,6 @@ if __name__ == '__main__':
     payslips = get_payslips(wb, payday=args.Payday, search_terms=args.search_terms)
 
     if args.send_email:
-        EmailCredential = namedtuple("EmailCredential", "aws_access_key_id aws_secret_access_key")
         email_cred = EmailCredential(args.aws_access_key_id, args.aws_secret_access_key)
         export_and_send_payslips(payslips, sender_email=args.sender_email, email_credential=email_cred)
     else:

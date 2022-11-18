@@ -2,7 +2,7 @@ import logging
 from datetime import date
 
 
-def init_logger():
+def init_logger() -> None:
     filename = f"logs/{str(date.today())}.log"
     logger_format = "%(asctime)s | %(levelname)s | %(message)s"
 

@@ -1,16 +1,16 @@
+from dataclasses import dataclass
+from typing import Any
+
 from src.models.payslip_recipient import PayslipRecipient
 from src.models.payslip_date import PayslipDate
 import pathlib
 import logging
 
-
+@dataclass
 class Payslip:
-    def __init__(
-        self, recipient: PayslipRecipient, ws_range, payslip_date: PayslipDate
-    ) -> None:
-        self.recipient = recipient
-        self.ws_range = ws_range
-        self.payslip_date = payslip_date
+    recipient: PayslipRecipient
+    payslip_date: PayslipDate
+    ws_range: Any
 
     def export_to_pdf(self) -> None:
         export_directory = self._get_or_create_export_directory()

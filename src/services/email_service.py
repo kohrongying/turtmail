@@ -9,11 +9,12 @@ class EmailService:
     AWS_REGION = "ap-southeast-1"
 
     def __init__(self, email_credential):
-        self.client = boto3.client("ses",
-                                   region_name=self.AWS_REGION,
-                                   aws_access_key_id=email_credential.aws_access_key_id,
-                                   aws_secret_access_key=email_credential.aws_secret_access_key,
-                                   )
+        self.client = boto3.client(
+            "ses",
+            region_name=self.AWS_REGION,
+            aws_access_key_id=email_credential.aws_access_key_id,
+            aws_secret_access_key=email_credential.aws_secret_access_key,
+        )
 
     def send(self, mailer: PayslipMailer) -> None:
         try:

@@ -1,9 +1,6 @@
-import os
-from email.mime.application import MIMEApplication
-from email.mime.multipart import MIMEMultipart
-from email.mime.text import MIMEText
 from typing import List, Dict
 
+from src.helpers.payslip_email_builder import PayslipEmailBuilder
 from src.models.payslip import Payslip
 from src.models.raw_email import RawEmail
 
@@ -23,44 +20,9 @@ class PayslipRawEmail(RawEmail):
 
     @property
     def raw_message(self) -> Dict[str, str]:
-        return {"Data": self._build_raw_message().as_string()}
-
-    def _build_raw_message(self) -> MIMEMultipart:
-        # Create a multipart/mixed parent container.
-        msg = MIMEMultipart("mixed")
-
-        msg["Subject"] = self._build_subject()
-        msg["From"] = self.sender_email
-        msg["To"] = self.payslip.recipient.email
-
-        msg_body = self._build_body()
-        msg.attach(msg_body)
-
-        attachment = self._build_attachment()
-        msg.attach(attachment)
-        return msg
-
-    def _build_subject(self):
-        return f"Payslip for {self.payslip.payslip_date.to_string()}"
-
-    def _build_body(self):
-        CHARSET = "UTF-8"
-        BODY_TEXT = self._format_body()
-        msg_body = MIMEMultipart("alternative")
-        textpart = MIMEText(BODY_TEXT.encode(CHARSET), "plain", CHARSET)
-        msg_body.attach(textpart)
-        return msg_body
-
-    def _format_body(self):
-        return f"""Hi {self.payslip.recipient.name},\r\n\n
-Please refer to attached for {self.payslip.payslip_date.to_string()} payslip.\n\n
-This is an automated email. Please do not reply.
-"""
-
-    def _build_attachment(self):
-        ATTACHMENT = self.payslip.get_abs_filepath()
-        att = MIMEApplication(open(ATTACHMENT, "rb").read())
-        att.add_header(
-            "Content-Disposition", "attachment", filename=os.path.basename(ATTACHMENT)
-        )
-        return att
+        builder = PayslipEmailBuilder(self.payslip, self.sender_email) \
+            .build_subject() \
+            .build_to_from_emails() \
+            .build_body() \
+            .build_attachment()
+        return {"Data": builder.get_result()}

@@ -8,10 +8,10 @@ from src.models.payslip_recipient import PayslipRecipient
 
 class TestPayslip:
     def test_get_abs_filepath_and_get_export_dir(self, mock_payslip, mocker):
-        with mocker.patch("src.models.payslip.pathlib.Path"):
-            expected = str(pathlib.Path.cwd() / f"files/2020/12/John Doe.pdf")
-            actual = mock_payslip.get_abs_filepath()
-            assert actual == expected
+        mocker.patch("src.models.payslip.pathlib.Path")
+        expected = str(pathlib.Path.cwd() / f"files/2020/12/John Doe.pdf")
+        actual = mock_payslip.get_abs_filepath()
+        assert actual == expected
 
     def test_export_to_pdf(self, mock_payslip, mocker):
         pass

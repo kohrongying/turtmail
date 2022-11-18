@@ -2,12 +2,12 @@ import logging
 from dataclasses import dataclass
 from typing import List
 
+from src.models.payslip_raw_email import PayslipRawEmail
 from src.services.gui_service import get_program_args
 from src.models.payslip import Payslip
 from src.models.payslip_date import PayslipDate
 from src.services.email_service import EmailService
 from src.services.excel_service import ExcelService
-from src.models.payslip_mailer import PayslipMailer
 from src.payslip_wb_service import PayslipWbService
 from src.services.logging_service import init_logger
 
@@ -33,8 +33,8 @@ def export_payslips(payslips: List[Payslip]):
 def export_and_send_payslips(payslips: List[Payslip], sender_email: str, email_service):
     for payslip in payslips:
         payslip.export_to_pdf()
-        mailer = PayslipMailer(payslip, sender_email=sender_email)
-        email_service.send(mailer)
+        mail = PayslipRawEmail(payslip, sender_email=sender_email)
+        email_service.send(mail)
 
 
 def main():

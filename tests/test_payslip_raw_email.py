@@ -2,14 +2,24 @@ import pytest
 
 from src.models.payslip import Payslip
 from src.models.payslip_date import PayslipDate
-from src.models.payslip_mailer import PayslipMailer
+from src.models.payslip_raw_email import PayslipRawEmail
 from src.models.payslip_recipient import PayslipRecipient
 
 
-class TestPayslipMailer:
+class TestPayslipRawEmail:
+    def test_get_destination(self, mock_payslip_mailer):
+        expected = ["john@doe.com"]
+        actual = mock_payslip_mailer.destinations
+        assert actual == expected
+
+    def test_get_source(self, mock_payslip_mailer):
+        expected = "sender@example.com"
+        actual = mock_payslip_mailer.source
+        assert actual == expected
+
     def test_build_subject(self, mock_payslip_mailer):
         expected = "Payslip for December 2020"
-        actual = mock_payslip_mailer.build_subject()
+        actual = mock_payslip_mailer._build_subject()
         assert actual == expected
 
     def test_format_body(self, mock_payslip_mailer):
@@ -17,22 +27,12 @@ class TestPayslipMailer:
 Please refer to attached for December 2020 payslip.\n\n
 This is an automated email. Please do not reply.
 """
-        actual = mock_payslip_mailer.format_body()
-        assert actual == expected
-
-    def test_get_recipient_email(self, mock_payslip_mailer):
-        expected = "john@doe.com"
-        actual = mock_payslip_mailer.get_recipient_email()
-        assert actual == expected
-
-    def test_get_sender_email(self, mock_payslip_mailer):
-        expected = "sender@example.com"
-        actual = mock_payslip_mailer.get_sender_email()
+        actual = mock_payslip_mailer._format_body()
         assert actual == expected
 
     @pytest.fixture
-    def mock_payslip_mailer(self, mock_payslip) -> PayslipMailer:
-        return PayslipMailer(payslip=mock_payslip)
+    def mock_payslip_mailer(self, mock_payslip) -> PayslipRawEmail:
+        return PayslipRawEmail(payslip=mock_payslip, sender_email="sender@example.com")
 
     @pytest.fixture
     def mock_payslip(self) -> Payslip:

@@ -23,6 +23,6 @@ class Payslip:
         return str(pathlib.Path.cwd() / f"{export_directory}/{self.recipient.name}.pdf")
 
     def _get_or_create_export_directory(self) -> str:
-        export_directory = f"files/{self.payslip_date.yearString}/{self.payslip_date.mthNum}"
+        export_directory = f"files/{self.payslip_date.year}/{self.payslip_date.month}"
         pathlib.Path(export_directory).mkdir(parents=True, exist_ok=True)
         return export_directory

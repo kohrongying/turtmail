@@ -37,7 +37,7 @@ This is an automated email. Please do not reply.
         return self
 
     def build_attachment(self):
-        filepath = self.payslip.get_abs_filepath()
+        filepath = self.payslip.filepath
         attachment = MIMEApplication(open(filepath, "rb").read())
         attachment.add_header("Content-Disposition", "attachment", filename=os.path.basename(filepath))
         self.msg.attach(attachment)

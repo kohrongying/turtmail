@@ -20,11 +20,11 @@ class TestPayslipEmailBuilder:
         builder = PayslipEmailBuilder(mock_payslip, "sender@example.com").build_body()
         assert len(builder.msg.get_payload()) == 1
 
-    def test_build_attachment(self, mock_payslip, mock_filepath):
+    def test_build_attachment(self, mock_payslip):
         builder = PayslipEmailBuilder(mock_payslip, "sender@example.com").build_attachment()
         assert len(builder.msg.get_payload()) == 1
 
-    def test_build_all(self, mock_payslip, mock_filepath):
+    def test_build_all(self, mock_payslip):
         builder = PayslipEmailBuilder(mock_payslip, "sender@example.com")\
             .build_subject()\
             .build_to_from_emails()\
@@ -36,17 +36,14 @@ class TestPayslipEmailBuilder:
         assert len(builder.msg.get_payload()) == 2
 
     @pytest.fixture
-    def mock_payslip(self) -> Payslip:
+    def mock_payslip(self, tmp_path) -> Payslip:
         name = "John Doe"
         email = "john@doe.com"
         recipient = PayslipRecipient(name, email)
         payday = PayslipDate("2020-12-01")
-        return Payslip(recipient=recipient, ws_range=None, payslip_date=payday)
 
-    @pytest.fixture
-    def mock_filepath(self, tmp_path, mocker):
         d = tmp_path / "somepath"
         d.mkdir()
         tmpfile = tmp_path / "payslip.txt"
         tmpfile.write_text("$100")
-        mocker.patch("src.models.payslip.Payslip.get_abs_filepath", return_value=tmpfile)
+        return Payslip(recipient=recipient, ws_range=None, payslip_date=payday, filepath=str(tmpfile))

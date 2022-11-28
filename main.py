@@ -19,31 +19,23 @@ class EmailCredential:
     aws_secret_access_key: str
 
 
-def get_payslips(wb, payday: str, search_terms: str) -> List[Payslip]:
-    payslip_date = PayslipDate(payday)
-    return PayslipWbService(wb,
-                            payslip_date=payslip_date,
-                            search_terms=search_terms.split(";")).get_payslips()
-
-
-
-def export_and_send_payslips(payslips: List[Payslip], sender_email: str, email_service):
-    for payslip in payslips:
-        payslip.export_to_pdf()
-        mail = PayslipRawEmail(payslip, sender_email=sender_email)
-        email_service.send(mail)
+def get_payslips(wb, payslip_date: PayslipDate, search_terms: str) -> List[Payslip]:
+    wb_service = PayslipWbService(wb,
+                                  payslip_date=payslip_date,
+                                  search_terms=search_terms.split(";"))
+    return wb_service.get_payslips()
 
 
 def main():
     init_logger()
     args = get_program_args()
     logging.info(f"Your input: {args}")
-    payslip_date = args.Payday
+    payslip_date = PayslipDate(args.Payday)
     search_terms = args.search_terms
     export_dir = args.export_dir
 
     wb = ExcelService().open(args.Filepath)
-    payslips = get_payslips(wb, payday=payslip_date, search_terms=search_terms)
+    payslips = get_payslips(wb, payslip_date=payslip_date, search_terms=search_terms)
 
     export_service = PdfExportService(payslip_date=payslip_date, export_dir=export_dir)
     export_service.export_all(payslips)

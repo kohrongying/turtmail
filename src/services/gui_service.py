@@ -44,6 +44,13 @@ def get_program_args():
         },
     )
     admin_parser.add_argument(
+        "-d",
+        "--export_dir",
+        widget="Textarea",
+        default=os.path.expanduser("~/Desktop"),
+        help="Export location of excel files",
+    )
+    admin_parser.add_argument(
         "-e",
         "--sender_email",
         widget="Textarea",

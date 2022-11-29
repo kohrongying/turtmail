@@ -2,6 +2,16 @@ import os
 from datetime import datetime
 
 from gooey import Gooey, GooeyParser
+from typing import Dict
+
+
+def load_admin_settings() -> Dict[str, str]:
+    # read from ini file
+    return {}
+
+
+def save_admin_settings() -> None:
+    pass
 
 
 @Gooey(program_name="Send Monthly Payslips", tabbed_groups=True, navigation="Tabbed")

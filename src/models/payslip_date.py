@@ -12,6 +12,7 @@ class PayslipDate:
     @property
     def year(self) -> str:
         return self.datetime_object.strftime("%Y")
+
     @property
     def calendar_month(self) -> str:
         return self.datetime_object.strftime("%B")

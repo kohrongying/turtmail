@@ -7,14 +7,10 @@ from src.models.payslip_recipient import PayslipRecipient
 
 
 class TestPayslip:
-    def test_get_abs_filepath_and_get_export_dir(self, mock_payslip, mocker):
-        with mocker.patch("src.models.payslip.pathlib.Path"):
-            expected = str(pathlib.Path.cwd() / f"files/2020/12/John Doe.pdf")
-            actual = mock_payslip.get_abs_filepath()
-            assert actual == expected
-
-    def test_export_to_pdf(self, mock_payslip, mocker):
-        pass
+    def test_set_filepath(self, mock_payslip):
+        assert mock_payslip.filepath == None
+        mock_payslip.set_filepath("this/is/the/absolute/file/path")
+        assert mock_payslip.filepath == "this/is/the/absolute/file/path"
 
     @pytest.fixture
     def mock_payslip(self):

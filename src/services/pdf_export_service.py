@@ -19,6 +19,7 @@ class PdfExportService:
     def export_to_pdf(self, payslip: Payslip) -> None:
         abs_filepath = self.get_abs_filepath(payslip)
         payslip.ws_range.ExportAsFixedFormat(0, abs_filepath)
+        payslip.set_filepath(abs_filepath)
         logging.info(f"Generated {payslip.recipient.name} payslip at {abs_filepath}")
 
     def get_abs_filepath(self, payslip: Payslip) -> str:

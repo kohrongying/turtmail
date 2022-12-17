@@ -14,3 +14,8 @@ fmt:
 .PHONY: test
 test:
 	python -m pytest .
+
+.PHONY: build
+build:
+	python setup.py bdist_wheel
+

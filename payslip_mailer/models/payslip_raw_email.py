@@ -1,8 +1,8 @@
 from typing import List, Dict
 
-from src.helpers.payslip_email_builder import PayslipEmailBuilder
-from src.models.payslip import Payslip
-from src.models.raw_email import RawEmail
+from payslip_mailer.helpers.payslip_email_builder import PayslipEmailBuilder
+from payslip_mailer.models.payslip import Payslip
+from payslip_mailer.models.raw_email import RawEmail
 
 
 class PayslipRawEmail(RawEmail):
@@ -20,9 +20,11 @@ class PayslipRawEmail(RawEmail):
 
     @property
     def raw_message(self) -> Dict[str, str]:
-        builder = PayslipEmailBuilder(self.payslip, self.sender_email) \
-            .build_subject() \
-            .build_to_from_emails() \
-            .build_body() \
+        builder = (
+            PayslipEmailBuilder(self.payslip, self.sender_email)
+            .build_subject()
+            .build_to_from_emails()
+            .build_body()
             .build_attachment()
+        )
         return {"Data": builder.get_result()}

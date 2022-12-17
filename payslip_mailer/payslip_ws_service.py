@@ -1,10 +1,12 @@
 from typing import List, Optional
 
-from src.exceptions.invalid_payslip_sheet_exception import InvalidPayslipSheetException
-from src.models.payslip import Payslip
+from payslip_mailer.exceptions.invalid_payslip_sheet_exception import (
+    InvalidPayslipSheetException,
+)
+from payslip_mailer.models.payslip import Payslip
 import re
 
-from src.models.payslip_recipient import PayslipRecipient
+from payslip_mailer.models.payslip_recipient import PayslipRecipient
 
 
 class PayslipWsService:

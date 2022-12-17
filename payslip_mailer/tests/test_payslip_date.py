@@ -1,4 +1,4 @@
-from src.models.payslip_date import PayslipDate
+from payslip_mailer.models.payslip_date import PayslipDate
 
 
 class TestPayslipDate:

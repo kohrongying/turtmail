@@ -1,9 +1,9 @@
 import pytest
 
-from src.models.payslip import Payslip
-from src.models.payslip_date import PayslipDate
-from src.models.payslip_raw_email import PayslipRawEmail
-from src.models.payslip_recipient import PayslipRecipient
+from payslip_mailer.models.payslip import Payslip
+from payslip_mailer.models.payslip_date import PayslipDate
+from payslip_mailer.models.payslip_raw_email import PayslipRawEmail
+from payslip_mailer.models.payslip_recipient import PayslipRecipient
 
 
 class TestPayslipRawEmail:

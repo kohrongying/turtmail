@@ -1,14 +1,13 @@
-import pathlib
 import pytest
 
-from src.models.payslip import Payslip
-from src.models.payslip_date import PayslipDate
-from src.models.payslip_recipient import PayslipRecipient
+from payslip_mailer.models.payslip import Payslip
+from payslip_mailer.models.payslip_date import PayslipDate
+from payslip_mailer.models.payslip_recipient import PayslipRecipient
 
 
 class TestPayslip:
     def test_set_filepath(self, mock_payslip):
-        assert mock_payslip.filepath == None
+        assert mock_payslip.filepath is None
         mock_payslip.set_filepath("this/is/the/absolute/file/path")
         assert mock_payslip.filepath == "this/is/the/absolute/file/path"
 

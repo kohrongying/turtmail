@@ -1,7 +1,9 @@
 import pytest
 
-from src.exceptions.invalid_payslip_sheet_exception import InvalidPayslipSheetException
-from src.payslip_ws_service import PayslipWsService
+from payslip_mailer.exceptions.invalid_payslip_sheet_exception import (
+    InvalidPayslipSheetException,
+)
+from payslip_mailer.payslip_ws_service import PayslipWsService
 
 
 class TestPayslipWsService:
@@ -12,7 +14,7 @@ class TestPayslipWsService:
 
     def test_validate_email_address_return_true_given_valid(self, mock_service):
         valid_email = "test-sim@hotmail.com"
-        assert mock_service.validate_email_address(valid_email) == True
+        assert mock_service.validate_email_address(valid_email) is True
 
     def test_validate_email_address_raise_ex_given_invalid(self, mock_service):
         invalid_email = "test@gmail"

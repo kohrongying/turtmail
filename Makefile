@@ -1,11 +1,15 @@
 
 .PHONY: lint
 lint:
-	ruff src/**/*.py tests/**/*.py
+	ruff payslip_mailer/**/*.py
+
+.PHONY: lint-fix
+lint-fix:
+	ruff payslip_mailer/**/*.py --fix
 
 .PHONY: fmt
 fmt:
-	black src tests
+	black payslip_mailer
 
 .PHONY: test
 test:

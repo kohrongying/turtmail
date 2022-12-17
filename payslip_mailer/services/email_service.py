@@ -1,10 +1,10 @@
 import boto3
 from botocore.exceptions import ClientError
 
-from src.common.constants import AWS_REGION
+from payslip_mailer.common.constants import AWS_REGION
 import logging
 
-from src.models.raw_email import RawEmail
+from payslip_mailer.models.raw_email import RawEmail
 
 
 class EmailService:
@@ -30,6 +30,5 @@ class EmailService:
             logging.error(e.response["Error"]["Message"])
         else:
             logging.info(
-                f"Email sent to {mail.destinations}! " 
-                f"Message ID: {response['MessageId']}"
+                f"Email sent to {mail.destinations}! " f"Message ID: {response['MessageId']}"
             )

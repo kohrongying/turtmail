@@ -9,7 +9,6 @@ from payslip_mailer.common.constants import CONFIG_FILENAME
 from payslip_mailer.config_loader import PayslipConfig, load_config, save_config
 
 
-
 def save_admin_settings(args) -> PayslipConfig:
     new_payslip_config = PayslipConfig(
         aws_access_key_id=args.aws_access_key_id,

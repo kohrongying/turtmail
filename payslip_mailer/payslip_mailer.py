@@ -29,7 +29,7 @@ def get_payslips(wb, payslip_date: PayslipDate, search_terms: str) -> List[Paysl
 
 
 def main():
-    # init_logger()
+    init_logger()
     args = get_program_args()
     logging.info(f"Your input: {args}")
     payslip_date = PayslipDate(args.Payday)

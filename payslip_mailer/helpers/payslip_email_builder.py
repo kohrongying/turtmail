@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import os
 from email.mime.application import MIMEApplication
 from email.mime.multipart import MIMEMultipart

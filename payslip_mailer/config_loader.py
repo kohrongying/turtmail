@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from configparser import ConfigParser
 from dataclasses import dataclass, asdict
 

@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from typing import List, Dict
 
 from payslip_mailer.helpers.payslip_email_builder import PayslipEmailBuilder

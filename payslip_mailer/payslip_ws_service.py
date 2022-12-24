@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from typing import List, Optional
 
 from payslip_mailer.exceptions.invalid_payslip_sheet_exception import (

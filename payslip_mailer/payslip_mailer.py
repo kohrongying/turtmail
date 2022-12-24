@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import logging
 from dataclasses import dataclass
 from typing import List
@@ -51,7 +53,3 @@ def main():
             email_service.send(mail)
 
     ExcelService().close(wb)
-
-
-if __name__ == "__main__":
-    main()

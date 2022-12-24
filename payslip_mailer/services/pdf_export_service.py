@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from typing import List
 
 from payslip_mailer.models.payslip import Payslip

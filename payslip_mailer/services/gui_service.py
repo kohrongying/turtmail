@@ -1,11 +1,12 @@
+# -*- coding: utf-8 -*-
+
 import os
 from datetime import datetime
 
 from gooey import Gooey, GooeyParser
 
-from config_loader import PayslipConfig, load_config, save_config
-
-config_filename = "config.ini"
+from payslip_mailer.common.constants import CONFIG_FILENAME
+from payslip_mailer.config_loader import PayslipConfig, load_config, save_config
 
 
 def save_admin_settings(args) -> PayslipConfig:
@@ -14,15 +15,15 @@ def save_admin_settings(args) -> PayslipConfig:
         aws_secret_access_key=args.aws_secret_access_key,
         sender_email=args.sender_email,
         search_terms=args.search_terms,
-        export_dir=args.export_dir
+        export_dir=args.export_dir,
     )
-    save_config(config_filename, new_payslip_config)
+    save_config(CONFIG_FILENAME, new_payslip_config)
     return new_payslip_config
 
 
 @Gooey(program_name="Send Monthly Payslips", tabbed_groups=True, navigation="Tabbed")
 def get_program_args():
-    payslip_config = load_config(config_filename)
+    payslip_config = load_config(CONFIG_FILENAME)
 
     parser = GooeyParser()
 
@@ -65,31 +66,37 @@ def get_program_args():
         "-d",
         "--export_dir",
         widget="Textarea",
-        default=payslip_config.export_dir if payslip_config.export_dir else os.path.expanduser("~/Desktop"),
+        default=payslip_config.export_dir
+        if payslip_config.export_dir
+        else os.path.expanduser("~/Desktop"),
         help="Export location of excel files",
     )
     admin_parser.add_argument(
         "-e",
         "--sender_email",
         widget="Textarea",
-        default=payslip_config.sender_email if payslip_config.sender_email else os.getenv("sender_email",
-                                                                                          "sender@example.com"),
+        default=payslip_config.sender_email
+        if payslip_config.sender_email
+        else os.getenv("sender_email", "sender@example.com"),
         help="Email address of sender",
     )
     admin_parser.add_argument(
         "-t",
         "--search-terms",
         widget="Textarea",
-        default=payslip_config.search_terms if payslip_config.search_terms else os.getenv("search_terms", "XX Pte Ltd"),
-        help="List of search terms separated by ';' in which one must be present in every payslip",
+        default=payslip_config.search_terms
+        if payslip_config.search_terms
+        else os.getenv("search_terms", "XX Pte Ltd"),
+        help="List of search terms delimited by ';' which one must be found in every payslip",
     )
 
     admin_parser.add_argument(
         "-a",
         "--aws-access-key-id",
         widget="Textarea",
-        default=payslip_config.aws_access_key_id if payslip_config.aws_access_key_id else os.getenv(
-            "aws_access_key_id"),
+        default=payslip_config.aws_access_key_id
+        if payslip_config.aws_access_key_id
+        else os.getenv("aws_access_key_id"),
         help="AWS IAM User Access Key ID used for SES",
     )
 
@@ -97,8 +104,9 @@ def get_program_args():
         "-k",
         "--aws-secret-access-key",
         widget="Textarea",
-        default=payslip_config.aws_secret_access_key if payslip_config.aws_secret_access_key else os.getenv(
-            "aws_secret_access_key"),
+        default=payslip_config.aws_secret_access_key
+        if payslip_config.aws_secret_access_key
+        else os.getenv("aws_secret_access_key"),
         help="AWS IAM User Secret Access Key used for SES",
     )
 

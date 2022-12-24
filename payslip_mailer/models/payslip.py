@@ -1,8 +1,11 @@
+# -*- coding: utf-8 -*-
+
 from dataclasses import dataclass
 from typing import Any, Optional
 
-from src.models.payslip_recipient import PayslipRecipient
-from src.models.payslip_date import PayslipDate
+from payslip_mailer.models.payslip_recipient import PayslipRecipient
+from payslip_mailer.models.payslip_date import PayslipDate
+
 
 @dataclass
 class Payslip:

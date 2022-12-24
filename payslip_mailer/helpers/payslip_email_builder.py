@@ -1,13 +1,14 @@
+# -*- coding: utf-8 -*-
+
 import os
 from email.mime.application import MIMEApplication
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
-from src.models.payslip import Payslip
+from payslip_mailer.models.payslip import Payslip
 
 
 class PayslipEmailBuilder:
-
     def __init__(self, payslip, sender_email) -> None:
         self.payslip: Payslip = payslip
         self.sender_email: str = sender_email
@@ -39,7 +40,9 @@ This is an automated email. Please do not reply.
     def build_attachment(self):
         filepath = self.payslip.filepath
         attachment = MIMEApplication(open(filepath, "rb").read())
-        attachment.add_header("Content-Disposition", "attachment", filename=os.path.basename(filepath))
+        attachment.add_header(
+            "Content-Disposition", "attachment", filename=os.path.basename(filepath)
+        )
         self.msg.attach(attachment)
         return self
 

@@ -1,8 +1,10 @@
+# -*- coding: utf-8 -*-
+
 from typing import List
 
-from src.models.payslip import Payslip
-from src.models.payslip_date import PayslipDate
-from src.payslip_ws_service import PayslipWsService
+from payslip_mailer.models.payslip import Payslip
+from payslip_mailer.models.payslip_date import PayslipDate
+from payslip_mailer.payslip_ws_service import PayslipWsService
 import logging
 
 

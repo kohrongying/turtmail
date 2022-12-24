@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import win32com.client
 from pywintypes import com_error
 import pathlib

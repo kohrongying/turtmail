@@ -1,16 +1,18 @@
+# -*- coding: utf-8 -*-
+
 import logging
 from dataclasses import dataclass
 from typing import List
 
-from src.models.payslip_raw_email import PayslipRawEmail
-from src.services.gui_service import get_program_args
-from src.models.payslip import Payslip
-from src.models.payslip_date import PayslipDate
-from src.services.email_service import EmailService
-from src.services.excel_service import ExcelService
-from src.payslip_wb_service import PayslipWbService
-from src.services.logging_service import init_logger
-from src.services.pdf_export_service import PdfExportService
+from payslip_mailer.models.payslip_raw_email import PayslipRawEmail
+from payslip_mailer.services.gui_service import get_program_args
+from payslip_mailer.models.payslip import Payslip
+from payslip_mailer.models.payslip_date import PayslipDate
+from payslip_mailer.services.email_service import EmailService
+from payslip_mailer.services.excel_service import ExcelService
+from payslip_mailer.payslip_wb_service import PayslipWbService
+from payslip_mailer.services.logging_service import init_logger
+from payslip_mailer.services.pdf_export_service import PdfExportService
 
 
 @dataclass
@@ -20,9 +22,9 @@ class EmailCredential:
 
 
 def get_payslips(wb, payslip_date: PayslipDate, search_terms: str) -> List[Payslip]:
-    wb_service = PayslipWbService(wb,
-                                  payslip_date=payslip_date,
-                                  search_terms=search_terms.split(";"))
+    wb_service = PayslipWbService(
+        wb, payslip_date=payslip_date, search_terms=search_terms.split(";")
+    )
     return wb_service.get_payslips()
 
 
@@ -42,14 +44,12 @@ def main():
 
     if args.send_email:
         email_service = EmailService(
-            email_credential=EmailCredential(args.aws_access_key_id, args.aws_secret_access_key)
+            email_credential=EmailCredential(
+                args.aws_access_key_id, args.aws_secret_access_key
+            )
         )
         for payslip in payslips:
             mail = PayslipRawEmail(payslip, sender_email=args.sender_email)
             email_service.send(mail)
 
     ExcelService().close(wb)
-
-
-if __name__ == '__main__':
-    main()

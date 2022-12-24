@@ -1,13 +1,14 @@
+# -*- coding: utf-8 -*-
+
 from typing import List
 
-from src.models.payslip import Payslip
-from src.models.payslip_date import PayslipDate
+from payslip_mailer.models.payslip import Payslip
+from payslip_mailer.models.payslip_date import PayslipDate
 import pathlib
 import logging
 
 
 class PdfExportService:
-
     def __init__(self, payslip_date, export_dir) -> None:
         self.payslip_date: PayslipDate = payslip_date
         self.export_dir: str = export_dir
@@ -27,6 +28,8 @@ class PdfExportService:
         return f"{export_directory_with_dt}/{payslip.recipient.name}.pdf"
 
     def _get_or_create_export_directory_with_dt(self) -> str:
-        export_directory = f"{self.export_dir}/export/{self.payslip_date.year}/{self.payslip_date.month}"
+        export_directory = (
+            f"{self.export_dir}/export/{self.payslip_date.year}/{self.payslip_date.month}"
+        )
         pathlib.Path(export_directory).mkdir(parents=True, exist_ok=True)
         return export_directory

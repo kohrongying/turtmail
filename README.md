@@ -28,15 +28,20 @@ terraform apply
 3. Creates a SNS Topic for successful delivery -> triggers lambda function that logs output to Cloudwatch
 
 ## Running program
-```bash
-set aws_access_key_id=access-key-id
-set aws_secret_access_key=secret-access-key
+1. Git clone this repo
+2. Set up python virtualenv
 
-python main.py sample.xlsx
-
-python main.py sample.xlsx --send-email
+| Running on Windows: Create a batch script "Payslip.bat" with contents as per below. Run the batch file.
+```commandline
+"C:\Users\xxx\venv\Scripts\python.exe" "path/to/payslips-mailer-runner.py"
 ```
-For powershell: `.\run.ps1`
+*TIP*: Use `where python` to get the path of python executable
+
+| Running from command line
+```bash
+(venv) python payslip-mailer-runner.py
+```
+
 
 ## Important to note:
 - use AWS SES configuration set to monitor email delivery

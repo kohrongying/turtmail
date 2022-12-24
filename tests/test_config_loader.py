@@ -13,7 +13,7 @@ def test_load_config_return_default_values_when_config_file_does_not_exist():
 
 
 def test_load_config_return_values_when_loading_config_file():
-    payslip_config = load_config("config.test.ini")
+    payslip_config = load_config(str(Path(__file__).parent / "config.test.ini"))
     assert payslip_config.search_terms == "ABCCompany;DEFCompany"
     assert payslip_config.export_dir == "C:\\User\\Desktop"
     assert payslip_config.aws_access_key_id == ""

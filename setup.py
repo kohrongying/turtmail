@@ -1,4 +1,6 @@
-from setuptools import setup, find_packages
+# -*- coding: utf-8 -*-
+
+from setuptools import setup
 
 
 def required_packages():
@@ -9,7 +11,11 @@ def required_packages():
 setup(
     name='payslip_mailer',
     version='1.0',
-    packages=find_packages(),  # include/exclude arguments take * as wildcard, . for any sub-package names
-    scripts=["bin/payslip-mailer"],
+    packages=["payslip_mailer"],
+    entry_points={
+        'console_scripts': [
+            'payslip_mailer = payslip_mailer.payslip_mailer:main',
+        ],
+    },
     install_requires=required_packages()
 )

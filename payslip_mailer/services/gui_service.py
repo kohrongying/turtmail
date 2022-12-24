@@ -5,9 +5,9 @@ from datetime import datetime
 
 from gooey import Gooey, GooeyParser
 
+from payslip_mailer.common.constants import CONFIG_FILENAME
 from payslip_mailer.config_loader import PayslipConfig, load_config, save_config
 
-config_filename = "config.ini"
 
 
 def save_admin_settings(args) -> PayslipConfig:
@@ -18,13 +18,13 @@ def save_admin_settings(args) -> PayslipConfig:
         search_terms=args.search_terms,
         export_dir=args.export_dir,
     )
-    save_config(config_filename, new_payslip_config)
+    save_config(CONFIG_FILENAME, new_payslip_config)
     return new_payslip_config
 
 
 @Gooey(program_name="Send Monthly Payslips", tabbed_groups=True, navigation="Tabbed")
 def get_program_args():
-    payslip_config = load_config(config_filename)
+    payslip_config = load_config(CONFIG_FILENAME)
 
     parser = GooeyParser()
 

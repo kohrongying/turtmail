@@ -1,6 +1,6 @@
 from configparser import ConfigParser
 from pathlib import Path
-from payslip_mailer.config_loader import load_config, PayslipConfig, save_config, SECTION_KEY
+from payslip_mailer.config_loader import load_config, PayslipConfig, save_config, CONFIG_FILE_SECTION_KEY
 
 
 def test_load_config_return_default_values_when_config_file_does_not_exist():
@@ -28,10 +28,10 @@ def test_save_config():
     config = ConfigParser()
     config.read(str(filename))
 
-    assert config[SECTION_KEY].get("aws_access_key_id") == "abc@!2"
-    assert config[SECTION_KEY].get("aws_secret_access_key") == ""
-    assert config[SECTION_KEY].get("search_terms") == ""
-    assert config[SECTION_KEY].get("sender_email") == ""
-    assert config[SECTION_KEY].get("export_dir") == "C:\\User\\Desktop"
+    assert config[CONFIG_FILE_SECTION_KEY].get("aws_access_key_id") == "abc@!2"
+    assert config[CONFIG_FILE_SECTION_KEY].get("aws_secret_access_key") == ""
+    assert config[CONFIG_FILE_SECTION_KEY].get("search_terms") == ""
+    assert config[CONFIG_FILE_SECTION_KEY].get("sender_email") == ""
+    assert config[CONFIG_FILE_SECTION_KEY].get("export_dir") == "C:\\User\\Desktop"
 
     filename.unlink()
